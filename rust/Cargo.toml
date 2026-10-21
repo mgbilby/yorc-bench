@@ -1,0 +1,22 @@
+[package]
+name = "orcid-libs-bench"
+version = "0.0.0"
+edition = "2024"
+# Same MSRV as yorc-rs.
+rust-version = "1.87"
+description = "yorc-rs side of the yorc-rs / yorc-zig benchmarks and cross-check (yorc-bench)"
+license = "MIT"
+publish = false
+
+[dependencies]
+yorc = { path = "../yorc-rs", features = ["full"] }
+
+# Compared against Zig ReleaseFast, which compiles the whole program as one
+# unit: fat LTO and one codegen unit are the closest Rust equivalent.
+[profile.release]
+lto = "fat"
+codegen-units = 1
+debug = false
+
+# Not a member of any enclosing workspace: builds on its own.
+[workspace]

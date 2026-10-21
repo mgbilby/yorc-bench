@@ -1,0 +1,2 @@
+# Maven build output (mvn -q package).
+target/

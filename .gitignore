@@ -1,0 +1,15 @@
+# Raw benchmark output (./run.sh) stays local by default. A run whose
+# numbers are published is committed on purpose, with
+#   git add -f results/<run>.jsonl results/<run>.txt
+# (results/README.md); tracked files stay tracked.
+results/*
+!results/README.md
+
+# Build outputs of the four programs
+rust/target/
+rust/Cargo.lock
+zig/zig-out/
+zig/zig-out-own/
+zig/.zig-cache/
+java/target/
+__pycache__/

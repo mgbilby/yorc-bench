@@ -1,0 +1,9 @@
+[submodule "yorc-rs"]
+	path = yorc-rs
+	url = https://github.com/mgbilby/yorc-rs.git
+[submodule "yorc-zig"]
+	path = yorc-zig
+	url = https://github.com/mgbilby/yorc-zig.git
+[submodule "yorc-duckdb"]
+	path = yorc-duckdb
+	url = https://github.com/mgbilby/yorc-duckdb.git

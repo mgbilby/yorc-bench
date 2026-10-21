@@ -1,0 +1,10 @@
+yorc-bench
+Copyright © 2026 Mark G. Bilby. Licensed under the MIT License
+(see LICENSE). https://github.com/mgbilby/yorc-bench
+
+This repository holds no third-party data. The inputs the programs read (the
+public ORCID record, ORCID's schemas and samples, the dump fixture) are in the
+submodules yorc-rs/, yorc-zig/ and yorc-duckdb/, under the terms of their own
+LICENSE and NOTICE files. The Java program downloads ORCID's orcid-model 4.0.2
+(ORCID MIT-style licence) and its dependencies from Maven Central at build
+time; none of them is redistributed here.

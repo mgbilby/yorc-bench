@@ -1,0 +1,39 @@
+date:        2026-10-21T12:49:35Z
+host:        (Linux 7.0.0-38-generic x86_64)
+cpu:         Intel(R) Core(TM) i5-8500B CPU @ 3.00GHz (6 threads)
+rustc:       rustc 1.99.1 (58cf8f9c3 2026-10-13)
+zig:         0.18.0-dev.131+41f885830
+java:        openjdk version "21.0.12.1" 2026-08-18
+java opts:   -Xms2g -Xmx2g -XX:+UseParallelGC -XX:+AlwaysPreTouch -XX:-UsePerfData -Duser.timezone=UTC -Dfile.encoding=UTF-8
+java model:  org.orcid:orcid-model:4.0.2 (Jackson 2.15.4, jaxb-runtime 3.0.2; java/pom.xml)
+yorc-rs:     0e6be86 2026-10-19
+yorc-zig:    adc832e 2026-10-19
+yorc-duckdb: 9503817 2026-10-19
+yorc-bench:  485a0aa8d311 clean
+build:       cpu=native zig=libc malloc (headline), zig-own=1 (rust: release, lto=fat, codegen-units=1; zig: ReleaseFast)
+duckdb:      v1.5.6 (Variegata) 069cc9f9b5 ($HOME/github/mgb/yorc-bench/yorc-duckdb/build/release/duckdb; yorc-duckdb 9503817 2026-10-19)
+args:        -k 5 --root $HOME/github/mgb/yorc-bench
+cross-check: identical
+three-way:   differences (see compare.sh output) (compare.sh --only rust,zig,duckdb,java)
+java check:  differences (see compare.sh output) (compare.sh --only rust,zig,duckdb,java)
+label:       
+workload           Java ns/op  Rust ns/op  Zig ns/op  ZigOwn ns/op  DuckDB ns/op  Rust/Java  Zig/Java  Zig/Rust  ZigOwn/Zig  DuckDB/Java  DuckDB/Rust  Java MB/s  Rust MB/s  Zig MB/s  ZigOwn MB/s  DuckDB MB/s  reps J/R/Z/O/D
+-----------------  ----------  ----------  ---------  ------------  ------------  ---------  --------  --------  ----------  -----------  -----------  ---------  ---------  --------  -----------  -----------  --------------
+id_normalize                -     709,760    409,298       430,712     1,830,000          -         -      0.58        1.05            -         2.58          -      331.1     574.1        545.6        128.4       0/5/5/5/5
+xml_read_record    13,257,339   6,245,285  3,397,728     4,369,417   101,566,667       0.47      0.26      0.54        1.29         7.66        16.26       99.9      212.0     389.7        303.1         13.0       5/5/5/5/5
+xml_write_record    5,350,183     611,334    582,500     1,015,506             -       0.11      0.11      0.95        1.74            -            -      247.4     1812.6    1902.3       1091.2            -       5/5/5/5/0
+json_write_record   4,344,982   4,904,476  3,605,763     4,211,001             -       1.13      0.83      0.74        1.17            -            -      279.8      231.7     315.1        269.8            -       5/5/5/5/0
+json_read_record    4,004,179   5,506,747  1,757,699     2,245,562   169,766,667       1.38      0.44      0.32        1.28        42.40        30.83      303.6      206.3     646.4        506.0          6.7       5/5/5/5/5
+rows_record                 -   1,135,809    140,612       458,722   104,766,667          -         -      0.12        3.26            -        92.24          -     1165.9    9417.4       2886.7         12.6       0/5/5/5/5
+sha256              3,118,303   4,152,604  3,979,870     3,998,537     5,426,667       1.33      1.28      0.96        1.00         1.74         1.31      424.6      318.9     332.7        331.2        244.0       5/5/5/5/5
+dump_stream        15,612,846   6,880,913  3,910,675     5,935,956    10,250,000       0.44      0.25      0.57        1.52         0.66         1.49       87.6      198.8     349.8        230.4        133.4       5/5/5/5/5
+group_ids_read            548         796        782           786        11,887       1.45      1.43      0.98        1.01        21.71        14.93      281.2      193.4     197.0        195.9         13.0       5/5/5/5/5
+timeline_record             -     417,288    146,740       354,500    11,266,667          -         -      0.35        2.42            -        27.00          -     3173.3    9024.1       3735.4        117.5       0/5/5/5/5
+changes_record              -   2,556,223    525,455     1,224,773   131,866,667          -         -      0.21        2.33            -        51.59          -     1036.1    5040.2       2162.4         20.1       0/5/5/5/5
+dump_sample                 -     714,180    790,487       853,943     1,245,000          -         -      1.11        1.08            -         1.74          -     1915.2    1730.4       1601.8       1098.7       0/5/5/5/5
+-----------------  ----------  ----------  ---------  ------------  ------------  ---------  --------  --------  ----------  -----------  -----------  ---------  ---------  --------  -----------  -----------  --------------
+average                                                                                0.69      0.46      0.52        1.48         6.04         9.83
+
+median over repetitions. A/B is A's time over B's: below 1, A is faster (Zig/Rust 0.5: Zig takes half Rust's time). average: geometric mean of the column over the workloads it has. MB/s counts the workload's input (output for the writers; uncompressed members for dump_stream).
+Java: ORCID's orcid-model 4.0.2 (JAXB, Jackson), steady state after JIT warm-up, JVM startup excluded; sha256 is the JDK's MessageDigest (see README.md).
+DuckDB: yorc-duckdb in its duckdb CLI (run.sh --duckdb, duckdb/bench.py), one thread, each workload one SQL statement over all its iterations: SQL planning and execution included, process start-up excluded; the workloads are the closest SQL counterparts (README.md, "DuckDB leg").
